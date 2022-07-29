@@ -18,8 +18,8 @@ logo_path = logo_path.subsample(32)
 logo = Label(frame1, image= logo_path, width= screen_height * 0.7 , height= screen_height * 0.7, bg='black')
 logo.pack(side=LEFT, padx = 10)
 
-open_btn = Button(frame1, text='    Open    ', bg='#3b1c47', fg='white')
-open_btn.pack(side = RIGHT, padx=50)
+open_btn = Button(frame1, text='Open', bg='#3b1c47', fg='white')
+open_btn.pack(side = RIGHT, padx=50, ipadx=15)
 
 ######################## FRAME 2 ############################
 frame2 = Frame(home,height=screen_height *0.2, width= screen_width, bg= '#3b1c47')
