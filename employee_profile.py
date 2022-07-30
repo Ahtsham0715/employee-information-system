@@ -1,5 +1,6 @@
 from tkinter import *
-
+import customtkinter as ctk
+import awesometkinter as atk
 screen_height = 350
 screen_width = 500
 
@@ -54,8 +55,11 @@ phone_icon.place(x=screen_width * 0.35, y=screen_height * 0.21)
 useremail = Label(frame2, text='03123456789', fg = '#22eba3', bg = 'black', font=('Arial',16))
 useremail.place(x=screen_width * 0.45, y=screen_height * 0.22)
 
-open_btn = Button(frame2, text='Edit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=25)
-open_btn.place(x=screen_width * 0.6, y=screen_height * 0.45)
+def edit_func():
+    ctk.CTkInputDialog(master=frame2, title='Authenticate',text='Login')
+
+edit_btn = Button(frame2, text='Edit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=25, command=edit_func)
+edit_btn.place(x=screen_width * 0.6, y=screen_height * 0.45)
 
 profile_pic_path = PhotoImage(file='assets/Sample_Employee_2.png')
 profile_pic_path = profile_pic_path.zoom(1)
