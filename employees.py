@@ -2,54 +2,59 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import *
 from tkinter import *
+
+from adduser import adduser_func
+
 screen_height = 350
 screen_width = 500
 
-class VerticalScrolledFrame(ttk.Frame):
-    """A pure Tkinter scrollable frame that actually works!
-    * Use the 'interior' attribute to place widgets inside the scrollable frame.
-    * Construct and pack/place/grid normally.
-    * This frame only allows vertical scrolling.
-    """
-    def __init__(self, parent, *args, **kw):
-        ttk.Frame.__init__(self, parent, *args, **kw)
+def employees_func():
 
-        # Create a canvas object and a vertical scrollbar for scrolling it.
-        vscrollbar = ttk.Scrollbar(self, orient=VERTICAL)
-        vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
-        canvas = tk.Canvas(self, bd=0, highlightthickness=0,
-                           yscrollcommand=vscrollbar.set)
-        canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
-        vscrollbar.config(command=canvas.yview)
+    class VerticalScrolledFrame(ttk.Frame):
+        """A pure Tkinter scrollable frame that actually works!
+        * Use the 'interior' attribute to place widgets inside the scrollable frame.
+        * Construct and pack/place/grid normally.
+        * This frame only allows vertical scrolling.
+        """
+        def __init__(self, parent, *args, **kw):
+            ttk.Frame.__init__(self, parent, *args, **kw)
 
-        # Reset the view
-        canvas.xview_moveto(0)
-        canvas.yview_moveto(0)
-        # Create a frame inside the canvas which will be scrolled with it.
-        self.interior = interior = Frame(canvas,bg='black')
-        interior_id = canvas.create_window(0, 0, window=interior,
-                                           anchor=NW)
+            # Create a canvas object and a vertical scrollbar for scrolling it.
+            vscrollbar = ttk.Scrollbar(self, orient=VERTICAL)
+            vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
+            canvas = tk.Canvas(self, bd=0, highlightthickness=0,
+                            yscrollcommand=vscrollbar.set)
+            canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
+            vscrollbar.config(command=canvas.yview)
 
-        # Track changes to the canvas and frame width and sync them,
-        # also updating the scrollbar.
-        def _configure_interior(event):
-            # Update the scrollbars to match the size of the inner frame.
-            size = (interior.winfo_reqwidth(), interior.winfo_reqheight())
-            canvas.config(scrollregion="0 0 %s %s" % size)
-            if interior.winfo_reqwidth() != canvas.winfo_width():
-                # Update the canvas's width to fit the inner frame.
-                canvas.config(width=interior.winfo_reqwidth())
-        interior.bind('<Configure>', _configure_interior)
+            # Reset the view
+            canvas.xview_moveto(0)
+            canvas.yview_moveto(0)
+            # Create a frame inside the canvas which will be scrolled with it.
+            self.interior = interior = Frame(canvas,bg='black')
+            interior_id = canvas.create_window(0, 0, window=interior,
+                                            anchor=NW)
 
-        def _configure_canvas(event):
-            if interior.winfo_reqwidth() != canvas.winfo_width():
-                # Update the inner frame's width to fill the canvas.
-                canvas.itemconfigure(interior_id, width=canvas.winfo_width())
-        canvas.bind('<Configure>', _configure_canvas)
+            # Track changes to the canvas and frame width and sync them,
+            # also updating the scrollbar.
+            def _configure_interior(event):
+                # Update the scrollbars to match the size of the inner frame.
+                size = (interior.winfo_reqwidth(), interior.winfo_reqheight())
+                canvas.config(scrollregion="0 0 %s %s" % size)
+                if interior.winfo_reqwidth() != canvas.winfo_width():
+                    # Update the canvas's width to fit the inner frame.
+                    canvas.config(width=interior.winfo_reqwidth())
+            interior.bind('<Configure>', _configure_interior)
+
+            def _configure_canvas(event):
+                if interior.winfo_reqwidth() != canvas.winfo_width():
+                    # Update the inner frame's width to fill the canvas.
+                    canvas.itemconfigure(interior_id, width=canvas.winfo_width())
+            canvas.bind('<Configure>', _configure_canvas)
 
 
-if __name__ == "__main__":
-    
+    # if __name__ == "__main__":
+        
     class SampleApp(tk.Tk):
         
         def __init__(self, *args, **kwargs):
@@ -81,11 +86,15 @@ if __name__ == "__main__":
             self.search_btn.place(x=screen_width * 0.8, y=screen_height * 0.04)
 
 
+            def add_func():
+                pass
+                adduser_func()
+                # self.destroy()
 
             self.add_icon = PhotoImage(file=r"assets/Add_PNG.png")
             self.add_icon =self.add_icon.zoom(1)
             self.add_icon =self.add_icon.subsample(70)
-            self.add_btn = Button(self.frame1 ,image=self.add_icon ,relief='flat',width= screen_height * 0.05 , height= screen_height * 0.05, bg = '#3b1c47', activebackground='#3b1c47')
+            self.add_btn = Button(self.frame1 ,image=self.add_icon ,relief='flat',width= screen_height * 0.05 , height= screen_height * 0.05, bg = '#3b1c47', activebackground='#3b1c47', command= add_func)
             self.add_btn.place(x=screen_width * 0.9, y=screen_height * 0.04)
             
             self.frame = VerticalScrolledFrame(root)
@@ -107,3 +116,5 @@ if __name__ == "__main__":
 
     app = SampleApp()
     app.mainloop()
+    
+employees_func()
