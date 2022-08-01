@@ -1,6 +1,8 @@
 from tkinter import *
 import customtkinter as ctk
 import awesometkinter as atk
+
+from login import login_func
 screen_height = 350
 screen_width = 500
 
@@ -55,11 +57,22 @@ phone_icon.place(x=screen_width * 0.35, y=screen_height * 0.21)
 useremail = Label(frame2, text='03123456789', fg = '#22eba3', bg = 'black', font=('Arial',16))
 useremail.place(x=screen_width * 0.45, y=screen_height * 0.22)
 
-def edit_func():
-    ctk.CTkInputDialog(master=frame2, title='Authenticate',text='Login')
+salary_icon_path = PhotoImage(file='assets/Salary_PNG.png')
+salary_icon_path = salary_icon_path.zoom(1)
+salary_icon_path = salary_icon_path.subsample(55)
+salary_icon = Label(frame2, image= salary_icon_path, width= screen_height * 0.1 , height= screen_height * 0.1, bg = 'black')
+salary_icon.place(x=screen_width * 0.35, y=screen_height * 0.36)
 
-edit_btn = Button(frame2, text='Edit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=25, command=edit_func)
-edit_btn.place(x=screen_width * 0.6, y=screen_height * 0.45)
+usersalary = Label(frame2, text='$ 69,690,000', fg = '#22eba3', bg = 'black', font=('Arial',16))
+usersalary.place(x=screen_width * 0.45, y=screen_height * 0.37)
+
+def edit_func():
+    login_func()
+    # ctk.CTkInputDialog(master=frame2, title='Authenticate',text='Login')
+    # print(atk.dialog.filechooser(initialdir='assets/'))
+
+edit_btn = Button(frame2, text='Edit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=15, command=edit_func)
+edit_btn.place(x=screen_width * 0.55, y=screen_height * 0.5)
 
 profile_pic_path = PhotoImage(file='assets/Sample_Employee_2.png')
 profile_pic_path = profile_pic_path.zoom(1)
