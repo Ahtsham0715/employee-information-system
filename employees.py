@@ -100,16 +100,8 @@ if __name__ == "__main__":
             # var = dict()
             for i in range(4):
                 for j in range(4):
-                    # var['shami'] = IntVar()
-                    # userframe = Frame(self.frame.interior, bd=1, relief="flat", bg='#3b1c47',
-                    # width=screen_height * 0.3, height=screen_height * 0.3)   
-                    # userframe.grid(row = i+1, column = j+1, padx=10, pady=10)
                     userprofile = Button(self.frame.interior,text='Shami', compound='top',image=self.profilepic ,relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
-                    # userprofile.pack(side=TOP)
-                    # usersname = Label(userframe , text='shami', fg = '#22eba3', bg = '#3b1c47', font=('Arial',13))
-                    # usersname.pack(side=BOTTOM, anchor='center', pady=5)
                     buttons.append(userprofile)
-                    # buttons[-1].pack()
                     # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
                     buttons[-1].grid(row = i+1, column = j+1, padx=15, pady=10, ipady = 20)
 
