@@ -1,9 +1,9 @@
+import functools
 import sqlite3
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import *
 from tkinter import *
-from PIL import Image, ImageTk
 
 
 
@@ -105,7 +105,7 @@ def employees_func():
 
             def add_func():
                 import adduser
-                self.destroy()
+                # self.destroy()
                 adduser.adduser_func()
 
             self.add_icon = PhotoImage(file=r"assets/Add_PNG.png")
@@ -123,6 +123,13 @@ def employees_func():
                 self.profilepic = self.profilepic.zoom(1)
                 self.profilepic = self.profilepic.subsample(2)
                 self.usersimages.append(self.profilepic)
+                
+            def btn_func(event,name, email, phone, salary, pic):
+                self.withdraw()
+                print(pic)
+                import employee_profile
+                employee_profile.elployeeprofile_func(name, email, phone, salary, pic, self)
+                
             buttons = []
             # var = dict()
             r = 0
@@ -135,10 +142,13 @@ def employees_func():
                         c=0
                         r  += 1
                     # for j in range(4):
-                    userprofile = Button(self.frame.interior,text=self.usersdata[i][1], compound='top',image= self.usersimages[i],relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
-                    buttons.append(userprofile)
+                    self.userprofile = Button(self.frame.interior,text=self.usersdata[i][1], compound='top',image= self.usersimages[i],relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
+                    buttons.append(self.userprofile)
+                    
                     # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
                     buttons[-1].grid(row = r+1, column = c+1, padx=15, pady=10, ipady = 20)
+                    self.userprofile.bind('<Button-1>', functools.partial(btn_func, name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
+                    
                     c += 1
                 
 

@@ -23,7 +23,7 @@ def adduser_func():
             );''')
     print ("Table created successfully")
 
-    adduser = Tk()
+    adduser = Toplevel()
     adduser.geometry('500x350')
     adduser.resizable(False, False)
     adduser.configure(bg='black')
@@ -41,9 +41,9 @@ def adduser_func():
     username.place(x=screen_width * 0.45, y=screen_height * 0.07)
 
     def back_func():
-        import employees
+        # import employees
         adduser.destroy()
-        employees.employees_func()
+        # employees.employees_func()
 
     back_icon = PhotoImage(file=r"assets/Back_PNG.png")
     back_icon =back_icon.zoom(1)
@@ -168,4 +168,4 @@ def adduser_func():
 
     adduser.mainloop()
     
-adduser_func()
+# adduser_func()
