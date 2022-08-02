@@ -6,6 +6,8 @@ import tkinter.ttk as ttk
 from tkinter.constants import *
 from tkinter import *
 
+from login import login_func
+
 
 
 
@@ -135,23 +137,10 @@ def employees_func():
                 finally:
                     self.m.grab_release()
                 
-                
-            def edit_func(name, email, phone, salary, pic):
-                pass
-                
             def delete_profile(name, email):
                 global buttons, usersdata
                 if(messagebox.askyesno('Are you sure?', 'Do you want to delete this user?')):
-                    # try:
-                    conn = sqlite3.connect('employees.db')
-                    conn.execute("DELETE FROM USERS WHERE NAME=? AND EMAIL=?", (name,email))
-                    conn.commit()
-                    conn.close()
-                    self.destroy()
-                    self.__init__()
-
-                    # except:
-                        # messagebox.showerror('Try Again', 'Error while deleting user.')
+                    login_func(name, email)
                     
                 
             def btn_func(event,name, email, phone, salary, pic):

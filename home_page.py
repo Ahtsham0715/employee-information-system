@@ -19,7 +19,12 @@ def home_func():
     logo = Label(frame1, image= logo_path, width= screen_height * 0.7 , height= screen_height * 0.7, bg='black')
     logo.pack(side=LEFT, padx = 10)
 
-    open_btn = Button(frame1, text='Open', bg='#3b1c47', fg='white')
+    def open_func():
+        home.destroy()
+        import employees
+        employees.employees_func()
+    
+    open_btn = Button(frame1, text='Open', bg='#3b1c47', fg='white',command=open_func)
     open_btn.pack(side = RIGHT, padx=50, ipadx=15)
 
     ######################## FRAME 2 ############################
@@ -36,3 +41,5 @@ def home_func():
     txt2.pack(anchor='center',)
 
     home.mainloop()
+
+home_func()
