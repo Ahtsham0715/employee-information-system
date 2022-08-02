@@ -23,7 +23,7 @@ def adduser_func():
             );''')
     print ("Table created successfully")
 
-    adduser = Toplevel()
+    adduser = Tk()
     adduser.geometry('500x350')
     adduser.resizable(False, False)
     adduser.configure(bg='black')
@@ -41,9 +41,9 @@ def adduser_func():
     username.place(x=screen_width * 0.45, y=screen_height * 0.07)
 
     def back_func():
-        # import employees
+        import employees
         adduser.destroy()
-        # employees.employees_func()
+        employees.employees_func()
 
     back_icon = PhotoImage(file=r"assets/Back_PNG.png")
     back_icon =back_icon.zoom(1)
@@ -112,20 +112,20 @@ def adduser_func():
         if(len(usernamevar.get()) == 0 or len(useremailvar.get()) == 0 or len(userphonevar.get()) == 0 or len(usersalaryvar.get()) == 0):
             messagebox.showerror('Error', 'Please fill all fields')
         else:
-            insert_user()
-            # try:
-            #     insert_user()
-            #     useremailvar.set('')
-            #     usernamevar.set('')
-            #     userphonevar.set('')
-            #     usersalaryvar.set('')
-            #     imgpath = PhotoImage(file='assets/dummy_icon.png')
-            #     imgpath = imgpath.zoom(1)
-            #     imgpath = imgpath.subsample(1)
-            #     profile_pic.config(image=imgpath)
-            #     messagebox.showinfo('success', 'user added successfully')
-            # except:
-            #     messagebox.showerror('error', 'unable to save data')
+            # insert_user()
+            try:
+                insert_user()
+                # useremailvar.set('')
+                # usernamevar.set('')
+                # userphonevar.set('')
+                # usersalaryvar.set('')
+                # imgpath = PhotoImage(file='assets/dummy_icon.png')
+                # imgpath = imgpath.zoom(1)
+                # imgpath = imgpath.subsample(1)
+                # profile_pic.config(image=imgpath)
+                messagebox.showinfo('success', 'user added successfully')
+            except:
+                messagebox.showerror('error', 'unable to save data')
     submit_btn = Button(frame2, text='Submit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=15, command=submit_func)
     submit_btn.place(x=screen_width * 0.55, y=screen_height * 0.6)
 

@@ -1,6 +1,7 @@
 import functools
 import sqlite3
 import tkinter as tk
+from tkinter import messagebox
 import tkinter.ttk as ttk
 from tkinter.constants import *
 from tkinter import *
@@ -23,9 +24,9 @@ def employees_func():
             Frame.__init__(self, parent, *args, **kw)
 
             # Create a canvas object and a vertical scrollbar for scrolling it.
-            vscrollbar = ttk.Scrollbar(self, orient=VERTICAL, )
-            vscrollbar.pack(fill=Y, side=RIGHT, expand=TRUE)
-            canvas = tk.Canvas(self, bd=0, highlightthickness=0,
+            vscrollbar = Scrollbar(self, orient=VERTICAL)
+            vscrollbar.pack(fill=Y, side=RIGHT, expand=True,anchor='sw')
+            canvas = Canvas(self, bd=0, highlightthickness=0, bg='black',
                             yscrollcommand=vscrollbar.set)
             canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
             vscrollbar.config(command=canvas.yview)
@@ -34,7 +35,7 @@ def employees_func():
             canvas.xview_moveto(0)
             canvas.yview_moveto(0)
             # Create a frame inside the canvas which will be scrolled with it.
-            self.interior = interior = Frame(canvas,bg='black')
+            self.interior = interior = Frame(canvas, bg='black')
             interior_id = canvas.create_window(0, 0, window=interior,
                                             anchor=NW)
 
@@ -105,7 +106,7 @@ def employees_func():
 
             def add_func():
                 import adduser
-                # self.destroy()
+                self.destroy()
                 adduser.adduser_func()
 
             self.add_icon = PhotoImage(file=r"assets/Add_PNG.png")
@@ -114,7 +115,7 @@ def employees_func():
             self.add_btn = Button(self.frame1 ,image=self.add_icon ,relief='flat',width= screen_height * 0.05 , height= screen_height * 0.05, bg = '#3b1c47', activebackground='#3b1c47', command= add_func)
             self.add_btn.place(x=screen_width * 0.9, y=screen_height * 0.04)
             
-            self.frame = VerticalScrolledFrame(root, bg='black')
+            self.frame = VerticalScrolledFrame(root, bg = 'black')
             self.frame.pack()
             # self.label = ttk.Label(self, text="Shrink the window to activate the scrollbar.")
             # self.label.pack()
@@ -123,6 +124,35 @@ def employees_func():
                 self.profilepic = self.profilepic.zoom(1)
                 self.profilepic = self.profilepic.subsample(2)
                 self.usersimages.append(self.profilepic)
+            
+            def do_popup(event, name, email, phone, salary, pic):
+                self.m = Menu(root, tearoff = 0, bg='black', fg = 'white')
+                # self.m.add_command(label ="Edit" ,background='black',foreground='white' ,command= functools.partial(edit_func, name, email, phone, salary, pic,))
+                # self.m.add_separator()
+                self.m.add_command(label ="Delete",background='black',foreground='white' , command= functools.partial(delete_profile, name=name, email=email))  
+                try:
+                    self.m.tk_popup(event.x_root, event.y_root)
+                finally:
+                    self.m.grab_release()
+                
+                
+            def edit_func(name, email, phone, salary, pic):
+                pass
+                
+            def delete_profile(name, email):
+                global buttons, usersdata
+                if(messagebox.askyesno('Are you sure?', 'Do you want to delete this user?')):
+                    # try:
+                    conn = sqlite3.connect('employees.db')
+                    conn.execute("DELETE FROM USERS WHERE NAME=? AND EMAIL=?", (name,email))
+                    conn.commit()
+                    conn.close()
+                    self.destroy()
+                    self.__init__()
+
+                    # except:
+                        # messagebox.showerror('Try Again', 'Error while deleting user.')
+                    
                 
             def btn_func(event,name, email, phone, salary, pic):
                 self.withdraw()
@@ -130,26 +160,29 @@ def employees_func():
                 import employee_profile
                 employee_profile.elployeeprofile_func(name, email, phone, salary, pic, self)
                 
-            buttons = []
+            self.buttons = []
             # var = dict()
-            r = 0
-            c = 0
-            if len(self.usersdata) == 0:
-                Label(self.frame.interior, text='No Employee Available',bg='black', fg = 'white', font=('Arial',20)).pack(anchor = CENTER, pady=50)
-            else:
-                for i in range(len(self.usersdata)):
-                    if c == 4:
-                        c=0
-                        r  += 1
-                    # for j in range(4):
-                    self.userprofile = Button(self.frame.interior,text=self.usersdata[i][1], compound='top',image= self.usersimages[i],relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
-                    buttons.append(self.userprofile)
-                    
-                    # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
-                    buttons[-1].grid(row = r+1, column = c+1, padx=15, pady=10, ipady = 20)
-                    self.userprofile.bind('<Button-1>', functools.partial(btn_func, name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
-                    
-                    c += 1
+            def creating_profiles():
+                global buttons
+                r = 0
+                c = 0
+                if len(self.usersdata) == 0:
+                    Label(self.frame.interior, text='No Employee Available', fg = 'white',bg='black', font=('Arial',30)).pack(anchor = CENTER, pady=100, padx=35)
+                else:
+                    for i in range(len(self.usersdata)):
+                        if c == 4:
+                            c=0
+                            r  += 1
+                        # for j in range(4):
+                        self.userprofile = Button(self.frame.interior,text=self.usersdata[i][1], compound='top',image= self.usersimages[i],relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
+                        self.buttons.append(self.userprofile)
+                        
+                        # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
+                        self.buttons[-1].grid(row = r+1, column = c+1, padx=15, pady=10, ipady = 20)
+                        self.userprofile.bind('<Button-1>', functools.partial(btn_func, name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
+                        self.userprofile.bind('<Button-3>', functools.partial(do_popup, name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
+                        c += 1
+            creating_profiles()
                 
 
     app = SampleApp()
