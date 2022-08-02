@@ -1,9 +1,12 @@
+import sqlite3
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import *
 from tkinter import *
 
-from adduser import adduser_func
+
+
+
 
 screen_height = 350
 screen_width = 500
@@ -64,6 +67,22 @@ def employees_func():
             # screen_width = 500
             # self.geometry(f'{screen_width}x{screen_height}')
             # self.resizable(False, True)
+            usersdata = []
+            usersimages = []
+            def queryallusers():
+                conn = sqlite3.connect('employees.db')
+                rows = conn.execute("SELECT * FROM USERS")
+                
+                for row in rows:
+                    usersdata.append(row)
+                conn.close()
+                # for i in range(1,len(usersdata)+1):
+                #     self.profilepic = PhotoImage(file=f'assets/Sample_Employee_{i}.png')
+                #     self.profilepic = self.profilepic.zoom(1)
+                #     self.profilepic = self.profilepic.subsample(2)
+                #     usersimages.append(self.profilepic)
+                                    
+            queryallusers()
             self.title('Employees')
             self.configure(bg='black')
             ####################### FRAME 1 ############################
@@ -87,9 +106,9 @@ def employees_func():
 
 
             def add_func():
-                pass
-                adduser_func()
-                # self.destroy()
+                import adduser
+                self.destroy()
+                adduser.adduser_func()
 
             self.add_icon = PhotoImage(file=r"assets/Add_PNG.png")
             self.add_icon =self.add_icon.zoom(1)
@@ -102,17 +121,24 @@ def employees_func():
             # self.label = ttk.Label(self, text="Shrink the window to activate the scrollbar.")
             # self.label.pack()
             
-            self.profilepic = PhotoImage(file='assets/Sample_Employee_2.png')
+            self.profilepic = PhotoImage(file=f'assets/Sample_Employee_{1}.png')
             self.profilepic = self.profilepic.zoom(1)
             self.profilepic = self.profilepic.subsample(2)
             buttons = []
             # var = dict()
-            for i in range(4):
-                for j in range(4):
-                    userprofile = Button(self.frame.interior,text='Shami', compound='top',image=self.profilepic ,relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
-                    buttons.append(userprofile)
-                    # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
-                    buttons[-1].grid(row = i+1, column = j+1, padx=15, pady=10, ipady = 20)
+            r = 0
+            c = 0
+            for i in range(len(usersdata)):
+                if c == 4:
+                    c=0
+                    r  += 1
+                # for j in range(4):
+                userprofile = Button(self.frame.interior,text=usersdata[i][1], compound='top',image=self.profilepic,relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
+                buttons.append(userprofile)
+                # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
+                buttons[-1].grid(row = r+1, column = c+1, padx=15, pady=10, ipady = 20)
+                c += 1
+                
 
     app = SampleApp()
     app.mainloop()
