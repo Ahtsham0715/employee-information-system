@@ -3,7 +3,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import *
 from tkinter import *
-
+from PIL import Image, ImageTk
 
 
 
@@ -13,18 +13,18 @@ screen_width = 500
 
 def employees_func():
 
-    class VerticalScrolledFrame(ttk.Frame):
+    class VerticalScrolledFrame(Frame):
         """A pure Tkinter scrollable frame that actually works!
         * Use the 'interior' attribute to place widgets inside the scrollable frame.
         * Construct and pack/place/grid normally.
         * This frame only allows vertical scrolling.
         """
         def __init__(self, parent, *args, **kw):
-            ttk.Frame.__init__(self, parent, *args, **kw)
+            Frame.__init__(self, parent, *args, **kw)
 
             # Create a canvas object and a vertical scrollbar for scrolling it.
-            vscrollbar = ttk.Scrollbar(self, orient=VERTICAL)
-            vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
+            vscrollbar = ttk.Scrollbar(self, orient=VERTICAL, )
+            vscrollbar.pack(fill=Y, side=RIGHT, expand=TRUE)
             canvas = tk.Canvas(self, bd=0, highlightthickness=0,
                             yscrollcommand=vscrollbar.set)
             canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
@@ -67,22 +67,20 @@ def employees_func():
             # screen_width = 500
             # self.geometry(f'{screen_width}x{screen_height}')
             # self.resizable(False, True)
-            usersdata = []
-            usersimages = []
+            self.config(bg='black')
+            self.usersdata = []
+            self.usersimages = []
             def queryallusers():
                 conn = sqlite3.connect('employees.db')
                 rows = conn.execute("SELECT * FROM USERS")
                 
                 for row in rows:
-                    usersdata.append(row)
+                    self.usersdata.append(row)
                 conn.close()
-                # for i in range(1,len(usersdata)+1):
-                #     self.profilepic = PhotoImage(file=f'assets/Sample_Employee_{i}.png')
-                #     self.profilepic = self.profilepic.zoom(1)
-                #     self.profilepic = self.profilepic.subsample(2)
-                #     usersimages.append(self.profilepic)
-                                    
-            queryallusers()
+            try:
+                queryallusers()
+            except:
+                pass
             self.title('Employees')
             self.configure(bg='black')
             ####################### FRAME 1 ############################
@@ -116,28 +114,32 @@ def employees_func():
             self.add_btn = Button(self.frame1 ,image=self.add_icon ,relief='flat',width= screen_height * 0.05 , height= screen_height * 0.05, bg = '#3b1c47', activebackground='#3b1c47', command= add_func)
             self.add_btn.place(x=screen_width * 0.9, y=screen_height * 0.04)
             
-            self.frame = VerticalScrolledFrame(root)
+            self.frame = VerticalScrolledFrame(root, bg='black')
             self.frame.pack()
             # self.label = ttk.Label(self, text="Shrink the window to activate the scrollbar.")
             # self.label.pack()
-            
-            self.profilepic = PhotoImage(file=f'assets/Sample_Employee_{1}.png')
-            self.profilepic = self.profilepic.zoom(1)
-            self.profilepic = self.profilepic.subsample(2)
+            for i in self.usersdata:
+                self.profilepic = PhotoImage(data=i[5])
+                self.profilepic = self.profilepic.zoom(1)
+                self.profilepic = self.profilepic.subsample(2)
+                self.usersimages.append(self.profilepic)
             buttons = []
             # var = dict()
             r = 0
             c = 0
-            for i in range(len(usersdata)):
-                if c == 4:
-                    c=0
-                    r  += 1
-                # for j in range(4):
-                userprofile = Button(self.frame.interior,text=usersdata[i][1], compound='top',image=self.profilepic,relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
-                buttons.append(userprofile)
-                # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
-                buttons[-1].grid(row = r+1, column = c+1, padx=15, pady=10, ipady = 20)
-                c += 1
+            if len(self.usersdata) == 0:
+                Label(self.frame.interior, text='No Employee Available',bg='black', fg = 'white', font=('Arial',20)).pack(anchor = CENTER, pady=50)
+            else:
+                for i in range(len(self.usersdata)):
+                    if c == 4:
+                        c=0
+                        r  += 1
+                    # for j in range(4):
+                    userprofile = Button(self.frame.interior,text=self.usersdata[i][1], compound='top',image= self.usersimages[i],relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
+                    buttons.append(userprofile)
+                    # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
+                    buttons[-1].grid(row = r+1, column = c+1, padx=15, pady=10, ipady = 20)
+                    c += 1
                 
 
     app = SampleApp()

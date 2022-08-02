@@ -4,8 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 import awesometkinter as atk
 import sqlite3
-import random
-
+import base64
 def adduser_func():
 
     screen_height = 350
@@ -19,7 +18,9 @@ def adduser_func():
             NAME           TEXT    NOT NULL,
             EMAIL            TEXT     NOT NULL,
             PHONE        TEXT,
-            SALARY         TEXT);''')
+            SALARY         TEXT,
+            IMAGE       TEXT
+            );''')
     print ("Table created successfully")
 
     adduser = Tk()
@@ -92,31 +93,39 @@ def adduser_func():
     usersalary = Entry(frame2, textvariable=usersalaryvar, fg = '#22eba3', bg = 'black', font=('Arial',14))
     usersalary.place(x=screen_width * 0.45, y=screen_height * 0.36)
 
+    # imgpath = ''
+    isimageselected = False
+    selectedimagepath = ''
+
     def insert_user():
-        conn = sqlite3.connect('employees.db')
-        conn.execute("INSERT INTO USERS (NAME,EMAIL,PHONE,SALARY) VALUES (?,?,?,?)", (usernamevar.get(),useremailvar.get(),userphonevar.get(),usersalaryvar.get()))
-        conn.commit()
-        conn.close()
+        global selectedimagepath
+        with open(selectedimagepath, 'rb') as file:
+            # Reads each character
+            selectedimage = base64.b64encode(file.read())
+            conn = sqlite3.connect('employees.db')
+            conn.execute("INSERT INTO USERS (NAME,EMAIL,PHONE,SALARY,IMAGE) VALUES (?,?,?,?,?)", (usernamevar.get(),useremailvar.get(),userphonevar.get(),usersalaryvar.get(), selectedimage))
+            conn.commit()
+            conn.close()
 
 
     def submit_func():
         if(len(usernamevar.get()) == 0 or len(useremailvar.get()) == 0 or len(userphonevar.get()) == 0 or len(usersalaryvar.get()) == 0):
             messagebox.showerror('Error', 'Please fill all fields')
         else:
-            # insert_user()
-            try:
-                insert_user()
-                useremailvar.set('')
-                usernamevar.set('')
-                userphonevar.set('')
-                usersalaryvar.set('')
-                imgpath = PhotoImage(file='assets/dummy_icon.png')
-                imgpath = imgpath.zoom(1)
-                imgpath = imgpath.subsample(1)
-                profile_pic.config(image=imgpath)
-                messagebox.showinfo('success', 'user added successfully')
-            except:
-                messagebox.showerror('error', 'unable to save data')
+            insert_user()
+            # try:
+            #     insert_user()
+            #     useremailvar.set('')
+            #     usernamevar.set('')
+            #     userphonevar.set('')
+            #     usersalaryvar.set('')
+            #     imgpath = PhotoImage(file='assets/dummy_icon.png')
+            #     imgpath = imgpath.zoom(1)
+            #     imgpath = imgpath.subsample(1)
+            #     profile_pic.config(image=imgpath)
+            #     messagebox.showinfo('success', 'user added successfully')
+            # except:
+            #     messagebox.showerror('error', 'unable to save data')
     submit_btn = Button(frame2, text='Submit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=15, command=submit_func)
     submit_btn.place(x=screen_width * 0.55, y=screen_height * 0.6)
 
@@ -128,8 +137,12 @@ def adduser_func():
 
 
     def img_func():
-        global imgpath, isimageselected
+        global imgpath, isimageselected, selectedimagepath
         imgpath = atk.dialog.filechooser(initialdir='assets/')
+        if imgpath != '':
+            selectedimagepath = imgpath
+        else:
+            selectedimagepath = 'assets/dummy_icon.png'
         print(imgpath)
         # print(str(imgpath).split('/')[5] + '/' + str(imgpath).split('/')[6])
         if not imgpath == '':
