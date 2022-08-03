@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import customtkinter as ctk
 
-def login_func(name, email):
+def login_func(name, email, phone, salary, pic, isedit):
 
     screen_height = 250
     screen_width = 400
@@ -40,14 +40,19 @@ def login_func(name, email):
     def loginbtn_func():
         global isloggedin
         if passvar.get() == '1234':
-            try:
-                conn = sqlite3.connect('employees.db')
-                conn.execute("DELETE FROM USERS WHERE NAME=? AND EMAIL=?", (name,email))
-                conn.commit()
-                conn.close()
-                messagebox.showinfo('success','user deleted successfully')
-            except:
-                messagebox.showerror('Try Again', 'Error while deleting user.')
+            if isedit:
+                import edit_user
+                login.destroy()
+                edit_user.edituser_func(name, email, phone, salary, pic)
+            else:
+                try:
+                    conn = sqlite3.connect('employees.db')
+                    conn.execute("DELETE FROM USERS WHERE NAME=? AND EMAIL=?", (name,email))
+                    conn.commit()
+                    conn.close()
+                    messagebox.showinfo('success','user deleted successfully')
+                except:
+                    messagebox.showerror('Try Again', 'Error while deleting user.')
         else:
             messagebox.showerror('Try Again', 'Invalid Password')
 

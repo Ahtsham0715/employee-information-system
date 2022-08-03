@@ -5,32 +5,31 @@ from tkinter import messagebox
 import awesometkinter as atk
 import sqlite3
 import base64
-def adduser_func():
+def edituser_func(name, email, phone, salary, pic):
 
     screen_height = 350
     screen_width = 500
 
-    adduser = Tk()
-    adduser.geometry('500x350')
-    adduser.resizable(False, False)
-    adduser.configure(bg='black')
-    adduser.title('Add Employee')
-
+    edituser = Toplevel()
+    edituser.geometry('500x350')
+    edituser.resizable(False, False)
+    edituser.configure(bg='black')
+    edituser.title('Edit Employee')
 
 
     ######################## FRAME 1 ############################
-    frame1 = Frame(adduser,height=screen_height *0.25, width= screen_width, bg= '#3b1c47')
+    frame1 = Frame(edituser,height=screen_height *0.25, width= screen_width, bg= '#3b1c47')
     frame1.pack(side=TOP,  fill = BOTH, expand= YES)
 
     usernamevar = StringVar()
-    usernamevar.set('username')
+    usernamevar.set(name)
     username = Entry(frame1, textvariable= usernamevar, fg = '#22eba3', bg = '#3b1c47', font=('Arial',12))
     username.place(x=screen_width * 0.45, y=screen_height * 0.07)
 
     def back_func():
-        import employees
-        adduser.destroy()
-        employees.employees_func()
+        import employee_profile
+        edituser.destroy()
+        employee_profile.elployeeprofile_func(name, email, phone, salary, pic)
 
     back_icon = PhotoImage(file=r"assets/Back_PNG.png")
     back_icon =back_icon.zoom(1)
@@ -41,7 +40,7 @@ def adduser_func():
 
 
     ######################## FRAME 2 ############################
-    frame2 = Frame(adduser,height=screen_height *0.75, width= screen_width, bg= 'black')
+    frame2 = Frame(edituser,height=screen_height *0.75, width= screen_width, bg= 'black')
     frame2.pack(side=BOTTOM, fill = BOTH, expand= YES,)
 
     logo_path = PhotoImage(file='assets/SMALL_Iress_Logo.png')
@@ -57,6 +56,7 @@ def adduser_func():
     email_icon.place(x=screen_width * 0.35, y=screen_height * 0.05)
 
     useremailvar = StringVar()
+    useremailvar.set(email)
     useremail = Entry(frame2, textvariable=useremailvar, fg = '#22eba3', bg = 'black', font=('Arial',14))
     useremail.place(x=screen_width * 0.45, y=screen_height * 0.05)
 
@@ -67,6 +67,7 @@ def adduser_func():
     phone_icon.place(x=screen_width * 0.35, y=screen_height * 0.21)
 
     userphonevar = StringVar()
+    userphonevar.set(phone)
     userphone = Entry(frame2, textvariable=userphonevar, fg = '#22eba3', bg = 'black', font=('Arial',14))
     userphone.place(x=screen_width * 0.45, y=screen_height * 0.21)
 
@@ -77,6 +78,7 @@ def adduser_func():
     salary_icon.place(x=screen_width * 0.35, y=screen_height * 0.36)
 
     usersalaryvar = StringVar()
+    usersalaryvar.set(salary)
     usersalary = Entry(frame2, textvariable=usersalaryvar, fg = '#22eba3', bg = 'black', font=('Arial',14))
     usersalary.place(x=screen_width * 0.45, y=screen_height * 0.36)
 
@@ -84,13 +86,19 @@ def adduser_func():
     isimageselected = False
     selectedimagepath = ''
 
-    def insert_user():
+    def update_user():
         global selectedimagepath
-        with open(selectedimagepath, 'rb') as file:
-            # Reads each character
-            selectedimage = base64.b64encode(file.read())
+        if selectedimagepath != '':
+            with open(selectedimagepath, 'rb') as file:
+                # Reads each character
+                selectedimage = base64.b64encode(file.read())
+                conn = sqlite3.connect('employees.db')
+                conn.execute("UPDATE USERS SET NAME = ?,EMAIL = ?,PHONE = ?,SALARY = ?,IMAGE=? WHERE NAME=? AND EMAIL=?", (usernamevar.get(),useremailvar.get(),userphonevar.get(),usersalaryvar.get(), selectedimage, name, email))
+                conn.commit()
+                conn.close()
+        else:
             conn = sqlite3.connect('employees.db')
-            conn.execute("INSERT INTO USERS (NAME,EMAIL,PHONE,SALARY,IMAGE) VALUES (?,?,?,?,?)", (usernamevar.get(),useremailvar.get(),userphonevar.get(),usersalaryvar.get(), selectedimage))
+            conn.execute("UPDATE USERS SET NAME=?,EMAIL=?,PHONE=?,SALARY=?,IMAGE=? WHERE NAME=? AND EMAIL=?", (usernamevar.get(),useremailvar.get(),userphonevar.get(),usersalaryvar.get(), pic, name, email))
             conn.commit()
             conn.close()
 
@@ -99,9 +107,9 @@ def adduser_func():
         if(len(usernamevar.get()) == 0 or len(useremailvar.get()) == 0 or len(userphonevar.get()) == 0 or len(usersalaryvar.get()) == 0):
             messagebox.showerror('Error', 'Please fill all fields')
         else:
-            # insert_user()
+            # update_user()
             try:
-                insert_user()
+                update_user()
                 useremailvar.set('')
                 usernamevar.set('')
                 userphonevar.set('')
@@ -116,10 +124,10 @@ def adduser_func():
     submit_btn = Button(frame2, text='Submit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=15, command=submit_func)
     submit_btn.place(x=screen_width * 0.55, y=screen_height * 0.6)
 
-    imgpath = PhotoImage(file='assets/dummy_icon.png')
-    imgpath = imgpath.zoom(1)
-    imgpath = imgpath.subsample(1)
-    profile_pic = Label(adduser, image= imgpath, width= screen_height * 0.4 , height= screen_height * 0.55, bg = '#3b1c47')
+    # imgpath = PhotoImage(data=pic)
+    # imgpath = imgpath.zoom(1)
+    # imgpath = imgpath.subsample(1)
+    profile_pic = Label(edituser, image= pic, width= screen_height * 0.4 , height= screen_height * 0.55, bg = '#3b1c47')
     profile_pic.place(x=screen_width * 0.03, y=screen_height * 0.05)  
 
 
@@ -129,7 +137,7 @@ def adduser_func():
         if imgpath != '':
             selectedimagepath = imgpath
         else:
-            selectedimagepath = 'assets/dummy_icon.png'
+            selectedimagepath = ''
         print(imgpath)
         # print(str(imgpath).split('/')[5] + '/' + str(imgpath).split('/')[6])
         if not imgpath == '':
@@ -141,10 +149,10 @@ def adduser_func():
             profile_pic.config(image=imgpath)
             # select_btn['state'] = DISABLED
         else:
-            imgpath = PhotoImage(file='assets/dummy_icon.png')
-            imgpath = imgpath.zoom(1)
-            imgpath = imgpath.subsample(1)
-            profile_pic.config(image=imgpath)
+            # imgpath = PhotoImage(data=pic)
+            # imgpath = imgpath.zoom(1)
+            # imgpath = imgpath.subsample(1)
+            profile_pic.config(image=pic)
             
 
 
@@ -153,6 +161,6 @@ def adduser_func():
 
 
 
-    adduser.mainloop()
+    edituser.mainloop()
     
 # adduser_func()

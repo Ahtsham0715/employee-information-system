@@ -1,6 +1,21 @@
+import sqlite3
 from tkinter import *
 
 def home_func():
+
+    conn = sqlite3.connect('employees.db')
+    print("Opened database successfully")
+
+    conn.execute('''CREATE TABLE IF NOT EXISTS USERS
+            (ID INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL,
+            NAME           TEXT    NOT NULL,
+            EMAIL            TEXT     NOT NULL,
+            PHONE        TEXT,
+            SALARY         TEXT,
+            IMAGE       TEXT
+            );''')
+    print ("Table created successfully")
+    conn.close()
 
     screen_height = 350
     screen_width = 500

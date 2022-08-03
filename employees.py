@@ -131,23 +131,23 @@ def employees_func():
                 self.m = Menu(root, tearoff = 0, bg='black', fg = 'white')
                 # self.m.add_command(label ="Edit" ,background='black',foreground='white' ,command= functools.partial(edit_func, name, email, phone, salary, pic,))
                 # self.m.add_separator()
-                self.m.add_command(label ="Delete",background='black',foreground='white' , command= functools.partial(delete_profile, name=name, email=email))  
+                self.m.add_command(label ="Delete",background='black',foreground='white' , command= functools.partial(delete_profile, name=name, email=email,phone=phone,salary=salary,pic=pic))  
                 try:
                     self.m.tk_popup(event.x_root, event.y_root)
                 finally:
                     self.m.grab_release()
                 
-            def delete_profile(name, email):
+            def delete_profile(name, email, phone, salary, pic):
                 global buttons, usersdata
                 if(messagebox.askyesno('Are you sure?', 'Do you want to delete this user?')):
-                    login_func(name, email)
+                    login_func(name, email, phone, salary, pic, isedit=False)
                     
                 
             def btn_func(event,name, email, phone, salary, pic):
+                import employee_profile
                 self.withdraw()
                 print(pic)
-                import employee_profile
-                employee_profile.elployeeprofile_func(name, email, phone, salary, pic, self)
+                employee_profile.elployeeprofile_func(name=name, email=email, phone=phone, salary=salary, pic=pic, self=self)
                 
             self.buttons = []
             # var = dict()

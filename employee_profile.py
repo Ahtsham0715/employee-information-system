@@ -74,14 +74,14 @@ def elployeeprofile_func(name, email, phone, salary, pic, self):
     usersalary.place(x=screen_width * 0.45, y=screen_height * 0.37)
 
     def edit_func():
-        login_func()
+        login_func(name, email, phone, salary,pic,isedit=True)
         # ctk.CTkInputDialog(master=frame2, title='Authenticate',text='Login')
         # print(atk.dialog.filechooser(initialdir='assets/'))
 
     edit_btn = Button(frame2, text='Edit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=15, command=edit_func)
     edit_btn.place(x=screen_width * 0.55, y=screen_height * 0.5)
 
-    # profile_pic_path = PhotoImage(file='assets/Sample_Employee_2.png')
+    # profile_pic_path = PhotoImage(data=pic)
     # profile_pic_path = profile_pic_path.zoom(1)
     # profile_pic_path = profile_pic_path.subsample(1)
     profile_pic = Label(employee_profile, image= pic, bg = '#3b1c47')
