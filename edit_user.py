@@ -133,7 +133,7 @@ def edituser_func(name, email, phone, salary, pic):
 
     def img_func():
         global imgpath, isimageselected, selectedimagepath
-        imgpath = atk.dialog.filechooser(initialdir='assets/')
+        imgpath = atk.dialog.filechooser()
         if imgpath != '':
             selectedimagepath = imgpath
         else:

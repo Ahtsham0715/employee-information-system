@@ -125,7 +125,7 @@ def adduser_func():
 
     def img_func():
         global imgpath, isimageselected, selectedimagepath
-        imgpath = atk.dialog.filechooser(initialdir='assets/')
+        imgpath = atk.dialog.filechooser()
         if imgpath != '':
             selectedimagepath = imgpath
         else:
