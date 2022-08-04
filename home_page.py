@@ -58,3 +58,6 @@ def home_func():
     home.mainloop()
 
 home_func()
+
+
+# pyinstaller --noconfirm --onedir --windowed --add-data "C:/Users/Umer/AppData/Local/Programs/Python/Python37/Lib/site-packages/customtkinter;customtkinter/"  home_page.py
