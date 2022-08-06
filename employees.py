@@ -167,9 +167,10 @@ def employees_func():
             
             
             def add_func():
-                import adduser
-                self.destroy()
-                adduser.adduser_func()
+                # import adduser
+                self.withdraw()
+                login_func(name=self, email='', phone='', salary='',pic='',isedit=False, isnewuser=True)
+                # adduser.adduser_func()
 
             self.add_icon = PhotoImage(file=r"assets/Add_PNG.png")
             self.add_icon =self.add_icon.zoom(1)
@@ -200,7 +201,7 @@ def employees_func():
             def delete_profile(name, email, phone, salary, pic):
                 global buttons, usersdata
                 if(messagebox.askyesno('Are you sure?', 'Do you want to delete this user?')):
-                    login_func(name, email, phone, salary, pic, isedit=False)
+                    login_func(name, email, phone, salary, pic, isedit=False, isnewuser=False)
                     
                 
             def btn_func(event,name, email, phone, salary, pic):

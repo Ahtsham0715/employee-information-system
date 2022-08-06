@@ -74,7 +74,7 @@ def elployeeprofile_func(name, email, phone, salary, pic, self):
     usersalary.place(x=screen_width * 0.45, y=screen_height * 0.37)
 
     def edit_func():
-        login_func(name, email, phone, salary,pic,isedit=True)
+        login_func(name, email, phone, salary,pic,isedit=True, isnewuser=False)
         # ctk.CTkInputDialog(master=frame2, title='Authenticate',text='Login')
         # print(atk.dialog.filechooser(initialdir='assets/'))
 

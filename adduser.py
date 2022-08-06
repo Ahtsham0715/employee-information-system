@@ -2,6 +2,7 @@ from asyncio.windows_events import NULL
 from tkinter import *
 from tkinter import *
 from tkinter import messagebox
+from tkinter import filedialog
 import awesometkinter as atk
 import sqlite3
 import base64
@@ -125,7 +126,10 @@ def adduser_func():
 
     def img_func():
         global imgpath, isimageselected, selectedimagepath
-        imgpath = atk.dialog.filechooser()
+        # imgpath = atk.dialog.filechooser(
+        #     backend=[('png')]
+        # )
+        imgpath = filedialog.askopenfilename(filetypes=[("Image File",'.png')])
         if imgpath != '':
             selectedimagepath = imgpath
         else:

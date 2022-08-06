@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import customtkinter as ctk
 
-def login_func(name, email, phone, salary, pic, isedit):
+def login_func(name, email, phone, salary, pic, isedit, isnewuser):
 
     screen_height = 250
     screen_width = 400
@@ -23,6 +23,8 @@ def login_func(name, email, phone, salary, pic, isedit):
     username.place(x=screen_width * 0.35, y=screen_height * 0.04)
 
     def back_func():
+        if isnewuser:
+            name.deiconify()
         login.destroy()
 
     edit_icon = PhotoImage(file=r"assets/Back_PNG.png")
@@ -40,6 +42,11 @@ def login_func(name, email, phone, salary, pic, isedit):
     def loginbtn_func():
         global isloggedin
         if passvar.get() == '1234':
+            if isnewuser:
+                import adduser
+                login.destroy()
+                name.destroy()
+                adduser.adduser_func()
             if isedit:
                 import edit_user
                 login.destroy()
@@ -55,6 +62,8 @@ def login_func(name, email, phone, salary, pic, isedit):
                     messagebox.showerror('Try Again', 'Error while deleting user.')
         else:
             messagebox.showerror('Try Again', 'Invalid Password')
+            # if isnewuser:
+                # name.deiconify()
 
     pass_input = Entry(master=frame2,textvariable=passvar,fg='black',relief=FLAT, bg='grey')
     pass_input.place(x=screen_width * 0.37, y=screen_height * 0.3)
