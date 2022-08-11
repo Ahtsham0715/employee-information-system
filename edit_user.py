@@ -28,9 +28,9 @@ def edituser_func(id,name, email, phone, salary, pic):
     username.place(x=screen_width * 0.45, y=screen_height * 0.07)
 
     def back_func():
-        import employee_profile
+        # import employee_profile
         edituser.destroy()
-        employee_profile.elployeeprofile_func(id = 0,name=name, email=email, phone=phone, salary=salary, pic=pic, self='')
+        # employee_profile.elployeeprofile_func(id = 0,name=name, email=email, phone=phone, salary=salary, pic=pic, self='')
 
     back_icon = PhotoImage(file=r"assets/Back_PNG.png")
     back_icon =back_icon.zoom(1)
@@ -87,7 +87,8 @@ def edituser_func(id,name, email, phone, salary, pic):
     selectedimagepath = ''
 
     def update_user():
-        if selectedimagepath != pic and selectedimagepath != '':
+        global selectedimagepath
+        if selectedimagepath != '':
             with open(selectedimagepath, 'rb') as file:
                 # Reads each character
                 selectedimage = base64.b64encode(file.read())
@@ -106,7 +107,7 @@ def edituser_func(id,name, email, phone, salary, pic):
         if(len(usernamevar.get()) == 0 or len(useremailvar.get()) == 0 or len(userphonevar.get()) == 0 or len(usersalaryvar.get()) == 0):
             messagebox.showerror('Error', 'Please fill all fields')
         else:
-            print(imgpath)
+            # print(imgpath)
             # update_user()
             
             try:
@@ -140,7 +141,7 @@ def edituser_func(id,name, email, phone, salary, pic):
             selectedimagepath = imgpath
         else:
             selectedimagepath = ''
-        print(imgpath)
+        # print(imgpath)
         # print(str(imgpath).split('/')[5] + '/' + str(imgpath).split('/')[6])
         if not imgpath == '':
             profile_pic_path = PhotoImage(file=imgpath)
