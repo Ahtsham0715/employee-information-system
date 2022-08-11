@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import customtkinter as ctk
 
-def login_func(name, email, phone, salary, pic, isedit, isnewuser):
+def login_func(id,name, email, phone, salary, pic, isedit, isnewuser):
 
     screen_height = 250
     screen_width = 400
@@ -50,7 +50,7 @@ def login_func(name, email, phone, salary, pic, isedit, isnewuser):
             if isedit:
                 import edit_user
                 login.destroy()
-                edit_user.edituser_func(name, email, phone, salary, pic)
+                edit_user.edituser_func(id,name, email, phone, salary, pic)
             else:
                 try:
                     conn = sqlite3.connect('employees.db')

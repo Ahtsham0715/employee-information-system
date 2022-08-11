@@ -2,10 +2,11 @@ from asyncio.windows_events import NULL
 from tkinter import *
 from tkinter import *
 from tkinter import messagebox
+from tkinter import filedialog
 import awesometkinter as atk
 import sqlite3
 import base64
-def edituser_func(name, email, phone, salary, pic):
+def edituser_func(id,name, email, phone, salary, pic):
 
     screen_height = 350
     screen_width = 500
@@ -29,7 +30,7 @@ def edituser_func(name, email, phone, salary, pic):
     def back_func():
         import employee_profile
         edituser.destroy()
-        employee_profile.elployeeprofile_func(name, email, phone, salary, pic)
+        employee_profile.elployeeprofile_func(id = 0,name=name, email=email, phone=phone, salary=salary, pic=pic, self='')
 
     back_icon = PhotoImage(file=r"assets/Back_PNG.png")
     back_icon =back_icon.zoom(1)
@@ -82,23 +83,21 @@ def edituser_func(name, email, phone, salary, pic):
     usersalary = Entry(frame2, textvariable=usersalaryvar, fg = '#22eba3', bg = 'black', font=('Arial',14))
     usersalary.place(x=screen_width * 0.45, y=screen_height * 0.36)
 
-    # imgpath = ''
-    isimageselected = False
+    imgpath = ''
     selectedimagepath = ''
 
     def update_user():
-        global selectedimagepath
-        if selectedimagepath != '':
+        if selectedimagepath != pic and selectedimagepath != '':
             with open(selectedimagepath, 'rb') as file:
                 # Reads each character
                 selectedimage = base64.b64encode(file.read())
                 conn = sqlite3.connect('employees.db')
-                conn.execute("UPDATE USERS SET NAME = ?,EMAIL = ?,PHONE = ?,SALARY = ?,IMAGE=? WHERE NAME=? AND EMAIL=?", (usernamevar.get(),useremailvar.get(),userphonevar.get(),usersalaryvar.get(), selectedimage, name, email))
+                conn.execute("UPDATE USERS SET NAME = ?,EMAIL = ?,PHONE = ?,SALARY = ?,IMAGE=? WHERE ID=?", (usernamevar.get(),useremailvar.get(),userphonevar.get(),usersalaryvar.get(), selectedimage, id))
                 conn.commit()
                 conn.close()
         else:
             conn = sqlite3.connect('employees.db')
-            conn.execute("UPDATE USERS SET NAME=?,EMAIL=?,PHONE=?,SALARY=?,IMAGE=? WHERE NAME=? AND EMAIL=?", (usernamevar.get(),useremailvar.get(),userphonevar.get(),usersalaryvar.get(), pic, name, email))
+            conn.execute("UPDATE USERS SET NAME=?,EMAIL=?,PHONE=?,SALARY=? WHERE ID=?", (usernamevar.get(),useremailvar.get(),userphonevar.get(),usersalaryvar.get(), id))
             conn.commit()
             conn.close()
 
@@ -107,7 +106,9 @@ def edituser_func(name, email, phone, salary, pic):
         if(len(usernamevar.get()) == 0 or len(useremailvar.get()) == 0 or len(userphonevar.get()) == 0 or len(usersalaryvar.get()) == 0):
             messagebox.showerror('Error', 'Please fill all fields')
         else:
+            print(imgpath)
             # update_user()
+            
             try:
                 update_user()
                 useremailvar.set('')
@@ -118,7 +119,7 @@ def edituser_func(name, email, phone, salary, pic):
                 imgpath = imgpath.zoom(1)
                 imgpath = imgpath.subsample(1)
                 profile_pic.config(image=imgpath)
-                messagebox.showinfo('success', 'user added successfully')
+                messagebox.showinfo('success', 'user edited successfully')
             except:
                 messagebox.showerror('error', 'unable to save data')
     submit_btn = Button(frame2, text='Submit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=15, command=submit_func)
@@ -132,8 +133,9 @@ def edituser_func(name, email, phone, salary, pic):
 
 
     def img_func():
-        global imgpath, isimageselected, selectedimagepath
-        imgpath = atk.dialog.filechooser()
+        global imgpath, selectedimagepath
+        imgpath = filedialog.askopenfilename(filetypes=[("Image File",'.png')])
+        print(imgpath)
         if imgpath != '':
             selectedimagepath = imgpath
         else:
@@ -141,7 +143,6 @@ def edituser_func(name, email, phone, salary, pic):
         print(imgpath)
         # print(str(imgpath).split('/')[5] + '/' + str(imgpath).split('/')[6])
         if not imgpath == '':
-            isimageselected = True
             profile_pic_path = PhotoImage(file=imgpath)
             profile_pic_path = profile_pic_path.zoom(1)
             profile_pic_path = profile_pic_path.subsample(1)

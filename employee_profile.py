@@ -4,7 +4,7 @@ import awesometkinter as atk
 
 from login import login_func
 
-def elployeeprofile_func(name, email, phone, salary, pic, self):
+def elployeeprofile_func(id,name, email, phone, salary, pic, self):
 
     screen_height = 350
     screen_width = 500
@@ -64,17 +64,17 @@ def elployeeprofile_func(name, email, phone, salary, pic, self):
     useremail = Label(frame2, text=phone, fg = '#22eba3', bg = 'black', font=('Arial',16))
     useremail.place(x=screen_width * 0.45, y=screen_height * 0.22)
 
-    salary_icon_path = PhotoImage(file='assets/Salary_PNG.png')
-    salary_icon_path = salary_icon_path.zoom(1)
-    salary_icon_path = salary_icon_path.subsample(55)
-    salary_icon = Label(frame2, image= salary_icon_path, width= screen_height * 0.1 , height= screen_height * 0.1, bg = 'black')
-    salary_icon.place(x=screen_width * 0.35, y=screen_height * 0.36)
+    # salary_icon_path = PhotoImage(file='assets/Salary_PNG.png')
+    # salary_icon_path = salary_icon_path.zoom(1)
+    # salary_icon_path = salary_icon_path.subsample(55)
+    # salary_icon = Label(frame2, image= salary_icon_path, width= screen_height * 0.1 , height= screen_height * 0.1, bg = 'black')
+    # salary_icon.place(x=screen_width * 0.35, y=screen_height * 0.36)
 
-    usersalary = Label(frame2, text=salary, fg = '#22eba3', bg = 'black', font=('Arial',16))
-    usersalary.place(x=screen_width * 0.45, y=screen_height * 0.37)
+    # usersalary = Label(frame2, text=salary, fg = '#22eba3', bg = 'black', font=('Arial',16))
+    # usersalary.place(x=screen_width * 0.45, y=screen_height * 0.37)
 
     def edit_func():
-        login_func(name, email, phone, salary,pic,isedit=True, isnewuser=False)
+        login_func(id,name, email, phone, salary,pic,isedit=True, isnewuser=False)
         # ctk.CTkInputDialog(master=frame2, title='Authenticate',text='Login')
         # print(atk.dialog.filechooser(initialdir='assets/'))
 

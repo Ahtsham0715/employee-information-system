@@ -169,7 +169,7 @@ def employees_func():
             def add_func():
                 # import adduser
                 self.withdraw()
-                login_func(name=self, email='', phone='', salary='',pic='',isedit=False, isnewuser=True)
+                login_func(id=0,name=self, email='', phone='', salary='',pic='',isedit=False, isnewuser=True)
                 # adduser.adduser_func()
 
             self.add_icon = PhotoImage(file=r"assets/Add_PNG.png")
@@ -188,27 +188,27 @@ def employees_func():
                 self.profilepic = self.profilepic.subsample(2)
                 self.usersimages.append(self.profilepic)
             
-            def do_popup(event, name, email, phone, salary, pic):
+            def do_popup(event,id, name, email, phone, salary, pic):
                 self.m = Menu(root, tearoff = 0, bg='black', fg = 'white')
                 # self.m.add_command(label ="Edit" ,background='black',foreground='white' ,command= functools.partial(edit_func, name, email, phone, salary, pic,))
                 # self.m.add_separator()
-                self.m.add_command(label ="Delete",background='black',foreground='white' , command= functools.partial(delete_profile, name=name, email=email,phone=phone,salary=salary,pic=pic))  
+                self.m.add_command(label ="Delete",background='black',foreground='white' , command= functools.partial(delete_profile,id=id, name=name, email=email,phone=phone,salary=salary,pic=pic))  
                 try:
                     self.m.tk_popup(event.x_root, event.y_root)
                 finally:
                     self.m.grab_release()
                 
-            def delete_profile(name, email, phone, salary, pic):
+            def delete_profile(id,name, email, phone, salary, pic):
                 global buttons, usersdata
                 if(messagebox.askyesno('Are you sure?', 'Do you want to delete this user?')):
-                    login_func(name, email, phone, salary, pic, isedit=False, isnewuser=False)
+                    login_func(id,name, email, phone, salary, pic, isedit=False, isnewuser=False)
                     
                 
-            def btn_func(event,name, email, phone, salary, pic):
+            def btn_func(event,id,name, email, phone, salary, pic):
                 import employee_profile
                 self.withdraw()
                 print(pic)
-                employee_profile.elployeeprofile_func(name=name, email=email, phone=phone, salary=salary, pic=pic, self=self)
+                employee_profile.elployeeprofile_func(id=id,name=name, email=email, phone=phone, salary=salary, pic=pic, self=self)
                 
             self.buttons = []
             # var = dict()
@@ -229,8 +229,8 @@ def employees_func():
                         
                         # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
                         self.buttons[-1].grid(row = r+1, column = c+1, padx=15, pady=10, ipady = 20)
-                        self.userprofile.bind('<Button-1>', functools.partial(btn_func, name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
-                        self.userprofile.bind('<Button-3>', functools.partial(do_popup, name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
+                        self.userprofile.bind('<Button-1>', functools.partial(btn_func, id=self.usersdata[i][0], name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
+                        self.userprofile.bind('<Button-3>', functools.partial(do_popup,id=self.usersdata[i][0], name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
                         c += 1
             creating_profiles()
                 
