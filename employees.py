@@ -98,62 +98,37 @@ def employees_func():
 
             txt1 = Label(self.frame1, text='Employees', fg = '#22eba3', bg = '#3b1c47', font=('Arial',16))
             txt1.place(x=screen_width * 0.4, y=screen_height * 0.04)
-
+            self.tempbtnlist = []
+            
+            def back_search():
+                # global tempbtnlist
+                r = 0
+                c = 0
+                self.search_btn.config(image=self.search_icon, command=search_func)
+                for button in self.buttons:
+                    button.grid_forget()
+                for i in range(len(self.buttons)):
+                    if c == 4:
+                        c=0
+                        r  += 1
+                    self.buttons[i].grid(row = r+1, column = c+1, padx=15, pady=10, ipady = 20)
+                    c += 1
+                    
             def execute_search(uname):
+                # global tempbtnlist
                 print(uname)
                 if uname == '':
                     pass
+                elif uname == None:
+                    pass
                 else:
+                    self.search_btn.config(image=self.back_search_icon, command=back_search)
                     for button in self.buttons:    
-                        if button['text'] != uname:
+                        if not str(button['text']).startswith(uname):
+                            # self.tempbtnlist.append(button)
                             button.grid_forget()
                         # self.buttons.remove()
-                #     self.usersimages = []
-                #     self.usersdata = []
-                #     # try:
-                #     conn = sqlite3.connect('employees.db')
-                #     rows = conn.execute(f"SELECT * FROM USERS WHERE name=?",(uname,))
-                #     print(rows)
-                #     for row in rows:
-                #         self.usersdata.append(row)
-                #     conn.close()
-                #     print(len(self.usersdata))
-                #     # print(self.usersdata)
-                #     # self.usersimages = []
-                #     # self.usersdata = []
-                #     for i in self.usersdata:
-                #         self.profilepic = PhotoImage(data=i[5])
-                #         self.profilepic = self.profilepic.zoom(1)
-                #         self.profilepic = self.profilepic.subsample(2)
-                #         self.usersimages.append(self.profilepic)
-                #     # except:
-                #     #     messagebox.showerror('Error', 'Unable to search this user try again')
-                #     # try:
-                #     r = 0
-                #     c = 0
-                #     # self.frame.interior.grid_remove()                    
-                #     # self.frame.pack_forget()
-                #     self.buttons.clear()
-                #     if len(self.usersdata) == 0:
-                #         Label(self.frame.interior, text='No Employee Available', fg = 'white',bg='black', font=('Arial',30)).pack(anchor = CENTER, pady=100, padx=35)
-                #     else:
-                #         for i in range(len(self.usersdata)):
-                #             print(c)
-                #             if c == 4:
-                #                 c=0
-                #                 r  += 1
-                #             # for j in range(4):
-                #             self.userprofile = Button(self.frame.interior,text=self.usersdata[i][1], compound='top',image= self.usersimages[i],relief='flat',width= screen_height * 0.25 , height= screen_height * 0.25, bg = 'black', activebackground='black', fg= 'white')
-                #             self.buttons.append(self.userprofile)
-                #             self.buttons[1].text
-                #             # buttons.append(ttk.Button(self.frame.interior,image=self.profilepic, text="Button " + str(i)))
-                #             self.buttons[-1].grid(row = r+1, column = c+1, padx=15, pady=10, ipady = 20)
-                #             self.userprofile.bind('<Button-1>', functools.partial(btn_func, name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
-                #             self.userprofile.bind('<Button-3>', functools.partial(do_popup, name=self.usersdata[i][1], email=self.usersdata[i][2], phone=self.usersdata[i][3], salary=self.usersdata[i][4], pic=self.usersimages[i]))
-                #             c += 1
-                # self.update_idletasks()
-                    # except:
-                        # messagebox.showerror('Error', 'Error occur while searching the user.')
+               
                         
 
             def search_func():                
@@ -162,6 +137,9 @@ def employees_func():
             self.search_icon = PhotoImage(file=r"assets/Search_PNG.png")
             self.search_icon =self.search_icon.zoom(1)
             self.search_icon =self.search_icon.subsample(70)
+            self.back_search_icon = PhotoImage(file=r"assets/Back_PNG.png")
+            self.back_search_icon =self.back_search_icon.zoom(1)
+            self.back_search_icon =self.back_search_icon.subsample(70)
             self.search_btn = Button(self.frame1 ,image=self.search_icon ,relief='flat',width= screen_height * 0.05 , height= screen_height * 0.05, bg = '#3b1c47', activebackground='#3b1c47',command=search_func)
             self.search_btn.place(x=screen_width * 0.8, y=screen_height * 0.04)
             

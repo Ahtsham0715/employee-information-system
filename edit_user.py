@@ -112,21 +112,21 @@ def edituser_func(id,name, email, phone, salary, pic):
             messagebox.showerror('Error', 'Please fill all fields')
         else:
             # print(imgpath)
-            update_user()
+            # update_user()
             
-            # try:
-            #     update_user()
-            #     useremailvar.set('')
-            #     usernamevar.set('')
-            #     userphonevar.set('')
-            #     usersalaryvar.set('')
-            #     imgpath = PhotoImage(file='assets/dummy_icon.png')
-            #     imgpath = imgpath.zoom(1)
-            #     imgpath = imgpath.subsample(1)
-            #     profile_pic.config(image=imgpath)
-            #     messagebox.showinfo('success', 'user edited successfully')
-            # except:
-            #     messagebox.showerror('error', 'unable to save data')
+            try:
+                update_user()
+                # useremailvar.set('')
+                # usernamevar.set('')
+                # userphonevar.set('')
+                # usersalaryvar.set('')
+                # imgpath = PhotoImage(file='assets/dummy_icon.png')
+                # imgpath = imgpath.zoom(1)
+                # imgpath = imgpath.subsample(1)
+                # profile_pic.config(image=imgpath)
+                messagebox.showinfo('success', 'user edited successfully')
+            except:
+                messagebox.showerror('error', 'unable to save data')
     submit_btn = Button(frame2, text='Submit', bg='#3b1c47',activebackground='#3b1c47', activeforeground='white', fg='white',font=('Arial',15),padx=15, command=submit_func)
     submit_btn.place(x=screen_width * 0.55, y=screen_height * 0.6)
 
